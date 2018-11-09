@@ -100,7 +100,7 @@ class Db_Commands extends DB_Connect {
 	/**
 	*@param string $array where query in array form
 	*@param integer $node simple 1 or 0 integer that tells the function how to brew a string
-	*@param 
+	*@param array $opt carries possible options for where statements
 	*@return returns as query string 
 	*/
 
@@ -129,8 +129,9 @@ class Db_Commands extends DB_Connect {
 	}*/
 
 	/**
-	*@param string: where query in string form
-	*@param node: w
+	*@param string $array where query in array form
+	*@param integer $node simple 1 or 0 integer that tells the function how to brew a string
+	*@param array $opt carries possible options for where statements
 	*@return returns as query string 
 	*/
 	public function WhereArrayBrewToString($whereArr, $node ,$opt = []){
