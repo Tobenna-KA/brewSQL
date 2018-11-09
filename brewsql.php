@@ -1,88 +1,11 @@
-<?php ini_set("display_errors", true);
-error_reporting(E_ALL);
+<?php
 
-/**
-* File Created by: Abanofor K.O Tobenna
-* Project: HomeBrew
-* Description:  
-*				HomeBrew is a stand-alone Mysql Query Builder, focused on reducing the
-*				ammount of lines of code usually needed to come up with complex queries.
-*				The hope is that it	will take up a life of its own in Automating queries.
-*				Inspired By the Laravels own Query Builder.
-*
-* Date: Jan-05-2018
-*/
+namespace brewSQL;
 
+use brewSQL\DB_Connect;
+require "Connect.php";
 
-/**
-* 
-*/
-abstract class DB_Connect
-{
-	
-	function __construct()
-	{
-		# code...
-	}
-
-	public static function Dconnect(){
-
-		$conn = mysqli_connect(Config::DB_HOST, Config::DB_USER, Config::DB_PASSWORD, Config::DB_NAME);
-
-		return $conn;
-	}
-
-	protected static function connect()
-    {
-        static $db = null;
-
-        if ($db === null) {
-            $dsn = 'mysql:host=' . Config::DB_HOST . ';dbname=' . Config::DB_NAME . ';charset=utf8';
-            $db = new PDO($dsn, Config::DB_USER, Config::DB_PASSWORD);
-
-            // Throw an Exception when an error occurs
-            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        }
-
-        return $db;
-    }
-}
-
-class Config
-{
-
-    /**
-     * Database host
-     * @var string
-     */
-    const DB_HOST = 'localhost';
-
-    /**
-     * Database name
-     * @var string
-     */
-    const DB_NAME = 'campafia_db';
-
-    /**
-     * Database user
-     * @var string
-     */
-    const DB_USER = 'root';
-
-    /**
-     * Database password
-     * @var string
-     */
-    const DB_PASSWORD = 'red@1night';
-
-    /**
-     * Show or hide error messages on screen
-     * @var boolean
-     */
-    const SHOW_ERRORS = true;
-}
-
- class Db_Commands extends DB_Connect {
+class Db_Commands extends DB_Connect {
 
  	protected static $table;
  	protected static $select;
@@ -96,7 +19,7 @@ class Config
 	}
 
 	/**
-	*@param $db_where: where query in string/array form
+	*@param string $db_where: where query in string/array form
 	*@return return an object of this
 	*/
 	public function where($db_where, $opt = []){
@@ -138,7 +61,7 @@ class Config
 	}
 
 	/**
-	*@param $selectS: select query in string form
+	*@param string $selectS: select query in string form
 	*@return return an object of this
 	*/
 	public function select($selectS){
@@ -149,31 +72,35 @@ class Config
 	}
 
 	/**
-	*Executes Query 
+	*Executes Query
+	*@return returns an array of data
 	*/
 	public function get(){
 
-		$conn = static::connect();
+		$conn = DB_Connect::connect();
 		$stmt = $conn->prepare(self::$statement);
 		//$stmt->bindParam(self::$data);
+		// print_r(self::$data);
 		$result = $stmt->execute(self::$data);
+		
 		if($result){
-			return $result;
+			return $stmt->fetchAll();
 		}
 	}
 
 	/**
-	*Returns Query in prure sql statement
+	*Returns generated sql statement
 	*/
 	public function toSql(){
-		print_r(self::$data);
+		// print_r(self::$data);
 		return self::$statement;
 	}
 
 
 	/**
-	*@param string: where query in string form
-	*@param $array: where query in array form
+	*@param string $array where query in array form
+	*@param integer $node simple 1 or 0 integer that tells the function how to brew a string
+	*@param 
 	*@return returns as query string 
 	*/
 
@@ -201,6 +128,11 @@ class Config
 		return $query;	
 	}*/
 
+	/**
+	*@param string: where query in string form
+	*@param node: w
+	*@return returns as query string 
+	*/
 	public function WhereArrayBrewToString($whereArr, $node ,$opt = []){
 		//print_r($opt);
 		//variables
@@ -257,20 +189,6 @@ class DB extends Db_Commands
 }
 
 
-$q = new DB;
-
-//foreach (key([`email` => 'kabanofor@yahoo.com']) as $key => $value) {
-	//print_r(key([`email` => 'kabanofor@yahoo.com']);
-//}
-print_r(	$q->table("causer_tb")->select("*")
-				->where([
-					'email' => 'kabanofor@yahoo.com'
-				])
-				->where([
-					'id' => '001'
-				], 'OR')
-				->toSql()
-		);
 /*
 $array = [
     'fruit1' => 'apple',
