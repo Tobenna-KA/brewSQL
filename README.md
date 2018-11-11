@@ -8,9 +8,9 @@ Sql Synthesizer library... Built as a standalone sql brewing library, aimed at a
 <?php
  require brewsql.php;
  $q->table("users")->select("*")
-					->where(['email' => 'user@example.com'])
-					->where(['id' => '001'], 'OR')
-					->toSql();
+	->where(['email' => 'user@example.com'])
+	->where(['id' => '001'], 'OR')
+	->toSql();
  $q = new brewSQL\DB();
 ```
 #### Output:
