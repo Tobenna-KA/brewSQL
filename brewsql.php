@@ -12,6 +12,7 @@ class Db_Commands extends DB_Connect {
  	protected static $statement;
  	protected static $where;
  	protected static $data;
+ 	protected static $bind_params = false;
 
 	public function __construct(){
 
@@ -79,9 +80,20 @@ class Db_Commands extends DB_Connect {
 
 		$conn = DB_Connect::connect();
 		$stmt = $conn->prepare(self::$statement);
-		//$stmt->bindParam(self::$data);
-		// print_r(self::$data);
-		$result = $stmt->execute(self::$data);
+		$result = false;
+
+		if(self::$bind_params){//if there is data to bind then bindparams
+
+			foreach (self::$data as $key => $value) {
+				$stmt->bindParam(":".$key, $value);
+				$result = $stmt->execute();
+			}
+		}else{
+			//$stmt->bindParam(self::$data);
+			// print_r(self::$data);
+			$result = $stmt->execute(self::$data);
+		}
+		
 		
 		if($result){
 			return $stmt->fetchAll();
@@ -161,6 +173,25 @@ class Db_Commands extends DB_Connect {
 		}
 
 		return $query;	
+	}
+
+
+	/**
+	*Function takes in an array of data, to brew an insert statement
+	*@param array $data data to be inserted into a table
+	*@return boolean returns true or false
+	*/
+	public function insertOne($data = []){
+		self::$bind_params = true; //let get know that there is data to bind
+		$colums = "`" . implode("`, `", array_keys($data)) . "`";
+		$placeholers = ":" . implode(", :", array_keys($data));
+		$table = self::$table;
+		//formulate satement
+		self::$statement = "INSERT INTO `{$table}` ({$colums}) VALUES ({$placeholers})";
+		//set data to bind
+		self::$data = $data;
+
+		return $this;
 	}
 }
 

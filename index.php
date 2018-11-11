@@ -11,14 +11,27 @@ error_reporting(E_ALL);
 	//foreach (key([`email` => 'kabanofor@yahoo.com']) as $key => $value) {
 		//print_r(key([`email` => 'kabanofor@yahoo.com']);
 	//}
-	print_r(	$q->table("causer_tb")->select("*")
-					->where([
-						'email' => 'kabanofor@yahoo.com'
-					])
-					->where([
-						'id' => '001'
-					], 'OR')
-					->get()
-					// ->toSql()
-			);
+	// print_r(	$q->table("causer_tb")->select("*")
+	// 				->where([
+	// 					'email' => 'kabanofor@yahoo.com'
+	// 				])
+	// 				->where([
+	// 					'id' => '001'
+	// 				], 'OR')
+	// 				// ->get()
+	// 				->toSql()
+	// 		);
+
+	$data = ["email" => "kabanofor", 'id' => '001', 'uid' => '001'];
+	// print_r(array_keys($data));
+	// echo "<br>";
+	// $colums = implode(" ,", array_keys($data));
+	// $placeholers = ":" . implode(", :", array_keys($data));
+
+	// print_r("(" .$colums . ") VALUES (". $placeholers .")");
+
+	print_r($q->table("causer_tb")
+			->insertOne($data)
+			->toSql()
+		);
 ?>

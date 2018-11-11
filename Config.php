@@ -15,19 +15,19 @@ class Config
      * Database name
      * @var string
      */
-    const DB_NAME = 'campafia_db';
+    const DB_NAME = 'db-name';
 
     /**
      * Database user
      * @var string
      */
-    const DB_USER = 'root';
+    const DB_USER = 'db-user';
 
     /**
      * Database password
      * @var string
      */
-    const DB_PASSWORD = 'red@1night';
+    const DB_PASSWORD = 'db-password';
 
     /**
      * Show or hide error messages on screen
