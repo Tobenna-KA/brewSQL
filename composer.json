@@ -1,0 +1,15 @@
+{
+	"name": "kmicato/brewsql",
+    "description": "Sql Synthesizer library... Built as a standalone sql brewing library, aimed at automation of some simple SQL tasks",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "kmicato",
+            "email": "kabanofor@yahoo.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^7"
+    }
+}
